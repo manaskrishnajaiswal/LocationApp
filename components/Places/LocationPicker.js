@@ -7,10 +7,12 @@ import {
   useForegroundPermissions,
 } from "expo-location";
 import OutlinedButton from "../UI/OutlinedButton";
-import { getMapPreview } from "../../util/location";
+import MapPreview, { getMapPreview } from "../../util/location";
+import { useNavigation } from "@react-navigation/native";
 
 const LocationPicker = () => {
   const [pickedLocation, setPickedLocation] = useState();
+  const navigation = useNavigation();
   const [locationPermissionInformation, requestPermission] =
     useForegroundPermissions();
   async function verifyPermissions() {
@@ -41,16 +43,24 @@ const LocationPicker = () => {
       lng: location.coords.longitude,
     });
   }
-  function pickOnMapHandler() {}
+
+  function pickOnMapHandler() {
+    navigation.navigate("Map");
+  }
+
   let locationPreview = <Text>No location picked yet.</Text>;
+  //   console.log(pickedLocation);
   if (pickedLocation) {
     locationPreview = (
-      <Text>{getMapPreview(pickedLocation.lat, pickedLocation.lng)}</Text>
+      //   <Text>{getMapPreview(pickedLocation.lat, pickedLocation.lng)}</Text>
+      <MapPreview lat={pickedLocation.lat} lng={pickedLocation.lng} />
     );
   }
+
   return (
     <View>
       <View style={styles.mapPreview}>{locationPreview}</View>
+
       <View style={styles.actions}>
         <OutlinedButton icon="location" onPress={getLocationHandler}>
           Locate User
@@ -67,6 +77,7 @@ export default LocationPicker;
 
 const styles = StyleSheet.create({
   mapPreview: {
+    flex: 1,
     width: "100%",
     height: 200,
     marginVertical: 8,
