@@ -8,14 +8,13 @@ export function getMapPreview(lat, lng) {
 }
 
 const MapPreview = ({ lat, lng }) => {
-  // const [selectedLocation, setSelectedLocation] = useState();
   const region = {
     latitude: lat,
     longitude: lng,
     latitudeDelta: 0.005,
     longitudeDelta: 0.002,
   };
-  // console.log(region);
+
   return (
     <MapView style={styles.map} initialRegion={region}>
       <Marker
