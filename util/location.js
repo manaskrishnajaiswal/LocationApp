@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 
@@ -8,6 +8,7 @@ export function getMapPreview(lat, lng) {
 }
 
 const MapPreview = ({ lat, lng }) => {
+  // const [selectedLocation, setSelectedLocation] = useState();
   const region = {
     latitude: lat,
     longitude: lng,
@@ -15,7 +16,17 @@ const MapPreview = ({ lat, lng }) => {
     longitudeDelta: 0.002,
   };
   // console.log(region);
-  return <MapView style={styles.map} initialRegion={region}></MapView>;
+  return (
+    <MapView style={styles.map} initialRegion={region}>
+      <Marker
+        title="Picked Location"
+        coordinate={{
+          latitude: region.latitude,
+          longitude: region.longitude,
+        }}
+      />
+    </MapView>
+  );
 };
 
 export default MapPreview;
