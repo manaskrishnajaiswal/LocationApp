@@ -29,7 +29,7 @@ export function init() {
 
 export function insertPlace(place) {
   const promise = new Promise((resolve, reject) => {
-    database.transaction(() => {
+    database.transaction((tx) => {
       tx.executeSql(
         `INSERT INTO places (title, imageUri, address, lat, lng) VALUES (?,?,?,?,?)`,
         [
