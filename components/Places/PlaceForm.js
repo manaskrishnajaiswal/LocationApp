@@ -9,6 +9,7 @@ const PlaceForm = () => {
   const [enteredTitle, setEnteredTitle] = useState("");
   const [selectedImage, setSelectedImage] = useState();
   const [pickedLocation, setPickedLocation] = useState();
+  const [pickedAddress, setPickedAddress] = useState();
 
   function changeTitleHandler(enteredText) {
     setEnteredTitle(enteredText);
@@ -17,14 +18,20 @@ const PlaceForm = () => {
   function takeImageHandler(imageUri) {
     setSelectedImage(imageUri);
   }
+
   const pickLocationHandler = useCallback((location) => {
     setPickedLocation(location);
+  }, []);
+
+  const pickAddressHandler = useCallback((address) => {
+    setPickedAddress(address);
   }, []);
 
   function savePlaceHandler() {
     console.log(enteredTitle);
     console.log(selectedImage);
     console.log(pickedLocation);
+    console.log(pickedAddress);
   }
 
   return (
@@ -38,7 +45,10 @@ const PlaceForm = () => {
         />
       </View>
       <ImagePicker onTakeImage={takeImageHandler} />
-      <LocationPicker onPickLocation={pickLocationHandler} />
+      <LocationPicker
+        onPickLocation={pickLocationHandler}
+        onPickAddress={pickAddressHandler}
+      />
       <Button onPress={savePlaceHandler}>Add Place</Button>
     </ScrollView>
   );

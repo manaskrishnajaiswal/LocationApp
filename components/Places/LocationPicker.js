@@ -4,6 +4,7 @@ import { Colors } from "../../constants/colors";
 import {
   getCurrentPositionAsync,
   PermissionStatus,
+  reverseGeocodeAsync,
   useForegroundPermissions,
 } from "expo-location";
 import OutlinedButton from "../UI/OutlinedButton";
@@ -14,8 +15,9 @@ import {
   useRoute,
 } from "@react-navigation/native";
 
-const LocationPicker = ({ onPickLocation }) => {
+const LocationPicker = ({ onPickLocation, onPickAddress }) => {
   const [pickedLocation, setPickedLocation] = useState();
+  const [displayCurrentAddress, setDisplayCurrentAddress] = useState();
   const isFocused = useIsFocused();
   const navigation = useNavigation();
   const route = useRoute();
@@ -34,7 +36,8 @@ const LocationPicker = ({ onPickLocation }) => {
 
   useEffect(() => {
     onPickLocation(pickedLocation);
-  }, [pickedLocation, onPickLocation]);
+    onPickAddress(displayCurrentAddress);
+  }, [pickedLocation, onPickLocation, displayCurrentAddress, onPickAddress]);
 
   async function verifyPermissions() {
     if (
@@ -63,6 +66,18 @@ const LocationPicker = ({ onPickLocation }) => {
       lat: location.coords.latitude,
       lng: location.coords.longitude,
     });
+    if (location) {
+      const { latitude, longitude } = location.coords;
+      let response = await reverseGeocodeAsync({
+        latitude,
+        longitude,
+      });
+      for (let item of response) {
+        let address = `${item.name}, ${item.street}, ${item.district}, ${item.city}, ${item.region} - ${item.postalCode}, ${item.country}`;
+        // console.log(address);
+        setDisplayCurrentAddress(address);
+      }
+    }
   }
 
   function pickOnMapHandler() {
