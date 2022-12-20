@@ -6,7 +6,7 @@ import { storeFPlace } from "../util/http";
 const AddPlace = ({ navigation }) => {
   async function createPlaceHandler(place) {
     await insertPlace(place);
-    storeFPlace(place);
+    const id = await storeFPlace(place);
     navigation.navigate("AllPlaces");
   }
   return <PlaceForm onCreatePlace={createPlaceHandler} />;

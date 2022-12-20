@@ -1,8 +1,10 @@
 import axios from "axios";
 import { Place } from "../models/place";
 const BACKEND_URL = "https://locationimageapp-default-rtdb.firebaseio.com";
-export function storeFPlace(place) {
-  axios.post(BACKEND_URL + "/places.json", place);
+export async function storeFPlace(place) {
+  const response = await axios.post(BACKEND_URL + "/places.json", place);
+  const id = response.data.name;
+  return id;
 }
 
 export async function fetchFPlaces() {
@@ -22,4 +24,14 @@ export async function fetchFPlaces() {
     places.push(placeObj);
   }
   return places;
+}
+
+export async function fetchFPlacesById(id) {
+  const response = await axios.get(BACKEND_URL + `/places/${id}.json`);
+  // console.log(response.data);
+  return response.data;
+}
+
+export function deleteFPlace(id) {
+  return axios.delete(BACKEND_URL + `/places/${id}.json`);
 }

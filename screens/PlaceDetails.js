@@ -1,27 +1,31 @@
+import { useIsFocused } from "@react-navigation/native";
 import React, { useCallback, useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import { Colors } from "../constants/colors";
 import { deletePlaceDetails, fetchPlaceDetails } from "../util/database";
+import { deleteFPlace, fetchFPlacesById } from "../util/http";
 
 const PlaceDetails = ({ route, navigation }) => {
   const [fetchedPlace, setFetchedPlace] = useState();
+  const isFocused = useIsFocused();
   const selectedPlaceId = route.params.placeId;
-
+  // console.log(fetchedPlace);
   const showOnMapHandler = useCallback(() => {
-    if (fetchedPlace) {
+    if (fetchedPlace && isFocused) {
       //   console.log(fetchedPlace);
       navigation.navigate("MapPreviews", {
         latIn: fetchedPlace.lat,
         lngIn: fetchedPlace.lng,
       });
     }
-  }, [navigation, fetchedPlace]);
+  }, [navigation, fetchedPlace, isFocused]);
 
   const deleteRecordHandler = useCallback(() => {
     if (fetchedPlace) {
       //   console.log(fetchedPlace);
-      deletePlaceDetails(fetchedPlace.id);
+      // deletePlaceDetails(fetchedPlace.id);
+      deleteFPlace(selectedPlaceId);
       navigation.navigate("AllPlaces");
     }
   }, [navigation, fetchedPlace]);
@@ -29,7 +33,9 @@ const PlaceDetails = ({ route, navigation }) => {
   useEffect(() => {
     // use selectedPalaceId for fetching data for a single place
     async function loadPlaceData() {
-      const place = await fetchPlaceDetails(selectedPlaceId);
+      // const place = await fetchPlaceDetails(selectedPlaceId);
+      const place = await fetchFPlacesById(selectedPlaceId);
+      // console.log(place);
       setFetchedPlace(place);
 
       navigation.setOptions({
@@ -86,6 +92,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: "row",
+    justifyContent: "center",
   },
   locationContainer: {
     marginTop: 96,
