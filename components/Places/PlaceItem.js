@@ -3,10 +3,16 @@ import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { Colors } from "../../constants/colors";
 
 const PlaceItem = ({ place, onSelect }) => {
+  // console.log(place);
   return (
     <Pressable
       style={({ pressed }) => [styles.item, pressed && styles.pressed]}
-      onPress={onSelect.bind(this, place.id)}
+      onPress={onSelect.bind(
+        this,
+        place.id,
+        place.location.lat,
+        place.location.lng
+      )}
     >
       <Image style={styles.image} source={{ uri: place.imageUri }} />
       <View style={styles.info}>

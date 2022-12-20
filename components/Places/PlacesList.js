@@ -6,9 +6,12 @@ import { useNavigation } from "@react-navigation/native";
 
 const PlacesList = ({ places }) => {
   const navigation = useNavigation();
-  function selectPlaceHandler(id) {
+  function selectPlaceHandler(id, lat, lng) {
+    // console.log(id, lat, lng);
     navigation.navigate("PlaceDetails", {
       placeId: id,
+      placeLat: lat,
+      placeLng: lng,
     });
   }
 

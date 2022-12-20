@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import { Colors } from "../constants/colors";
@@ -6,8 +6,17 @@ import { fetchPlaceDetails } from "../util/database";
 
 const PlaceDetails = ({ route, navigation }) => {
   const [fetchedPlace, setFetchedPlace] = useState();
-  function showOnMapHandler() {}
   const selectedPlaceId = route.params.placeId;
+
+  const showOnMapHandler = useCallback(() => {
+    if (fetchedPlace) {
+      //   console.log(fetchedPlace);
+      navigation.navigate("MapPreviews", {
+        latIn: fetchedPlace.lat,
+        lngIn: fetchedPlace.lng,
+      });
+    }
+  }, [navigation, fetchedPlace]);
 
   useEffect(() => {
     // use selectedPalaceId for fetching data for a single place
@@ -21,7 +30,7 @@ const PlaceDetails = ({ route, navigation }) => {
     }
     loadPlaceData();
   }, [selectedPlaceId]);
-  //   console.log(fetchedPlace);
+
   if (!fetchedPlace) {
     return (
       <View style={styles.fallback}>
