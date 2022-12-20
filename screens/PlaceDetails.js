@@ -13,10 +13,10 @@ const PlaceDetails = ({ route, navigation }) => {
   // console.log(fetchedPlace);
   const showOnMapHandler = useCallback(() => {
     if (fetchedPlace && isFocused) {
-      //   console.log(fetchedPlace);
+      // console.log(fetchedPlace);
       navigation.navigate("MapPreviews", {
-        latIn: fetchedPlace.lat,
-        lngIn: fetchedPlace.lng,
+        latIn: fetchedPlace.location.lat,
+        lngIn: fetchedPlace.location.lng,
       });
     }
   }, [navigation, fetchedPlace, isFocused]);
