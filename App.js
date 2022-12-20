@@ -13,6 +13,7 @@ import { init } from "./util/database";
 import * as SplashScreen from "expo-splash-screen";
 import PlaceDetails from "./screens/PlaceDetails";
 import MapPreviews from "./screens/MapPreviews";
+import PlacesContextProvider from "./store/places-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -57,45 +58,47 @@ export default function App() {
   return (
     <>
       <StatusBar style="dark" />
-      <NavigationContainer onReady={onLayoutRootView}>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: Colors.primary500 },
-            headerTintColor: Colors.gray700,
-            contentStyle: { backgroundColor: Colors.gray700 },
-          }}
-        >
-          <Stack.Screen
-            name="AllPlaces"
-            component={AllPlaces}
-            options={({ navigation }) => ({
-              title: "Your Favorite Places",
-              headerRight: ({ tintColor }) => (
-                <IconButton
-                  icon="add"
-                  size={24}
-                  color={tintColor}
-                  onPress={() => navigation.navigate("AddPlace")}
-                />
-              ),
-            })}
-          />
-          <Stack.Screen
-            name="AddPlace"
-            component={AddPlace}
-            options={{
-              title: "Add a new place",
+      <PlacesContextProvider>
+        <NavigationContainer onReady={onLayoutRootView}>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: Colors.primary500 },
+              headerTintColor: Colors.gray700,
+              contentStyle: { backgroundColor: Colors.gray700 },
             }}
-          />
-          <Stack.Screen name="Map" component={Map} />
-          <Stack.Screen
-            name="PlaceDetails"
-            component={PlaceDetails}
-            options={{ title: "Loading Place..." }}
-          />
-          <Stack.Screen name="MapPreviews" component={MapPreviews} />
-        </Stack.Navigator>
-      </NavigationContainer>
+          >
+            <Stack.Screen
+              name="AllPlaces"
+              component={AllPlaces}
+              options={({ navigation }) => ({
+                title: "Your Favorite Places",
+                headerRight: ({ tintColor }) => (
+                  <IconButton
+                    icon="add"
+                    size={24}
+                    color={tintColor}
+                    onPress={() => navigation.navigate("AddPlace")}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="AddPlace"
+              component={AddPlace}
+              options={{
+                title: "Add a new place",
+              }}
+            />
+            <Stack.Screen name="Map" component={Map} />
+            <Stack.Screen
+              name="PlaceDetails"
+              component={PlaceDetails}
+              options={{ title: "Loading Place..." }}
+            />
+            <Stack.Screen name="MapPreviews" component={MapPreviews} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PlacesContextProvider>
     </>
   );
 }
