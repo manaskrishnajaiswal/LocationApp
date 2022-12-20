@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 import OutlinedButton from "../components/UI/OutlinedButton";
 import { Colors } from "../constants/colors";
-import { fetchPlaceDetails } from "../util/database";
+import { deletePlaceDetails, fetchPlaceDetails } from "../util/database";
 
 const PlaceDetails = ({ route, navigation }) => {
   const [fetchedPlace, setFetchedPlace] = useState();
@@ -15,6 +15,14 @@ const PlaceDetails = ({ route, navigation }) => {
         latIn: fetchedPlace.lat,
         lngIn: fetchedPlace.lng,
       });
+    }
+  }, [navigation, fetchedPlace]);
+
+  const deleteRecordHandler = useCallback(() => {
+    if (fetchedPlace) {
+      //   console.log(fetchedPlace);
+      deletePlaceDetails(fetchedPlace.id);
+      navigation.navigate("AllPlaces");
     }
   }, [navigation, fetchedPlace]);
 
@@ -47,9 +55,14 @@ const PlaceDetails = ({ route, navigation }) => {
         <View style={styles.addressContainer}>
           <Text style={styles.address}>{fetchedPlace.address}</Text>
         </View>
-        <OutlinedButton icon="map" onPress={showOnMapHandler}>
-          View On Map
-        </OutlinedButton>
+        <View style={styles.buttonContainer}>
+          <OutlinedButton icon="map" onPress={showOnMapHandler}>
+            View On Map
+          </OutlinedButton>
+          <OutlinedButton icon="remove-circle" onPress={deleteRecordHandler}>
+            Delete Record
+          </OutlinedButton>
+        </View>
       </View>
     </ScrollView>
   );
@@ -70,6 +83,9 @@ const styles = StyleSheet.create({
     height: "35%",
     minHeight: 300,
     width: "100%",
+  },
+  buttonContainer: {
+    flexDirection: "row",
   },
   locationContainer: {
     marginTop: 96,

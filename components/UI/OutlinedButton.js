@@ -1,7 +1,8 @@
 import React from "react";
 import { Pressable, StyleSheet, Text } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+// import { Ionicons } from "@expo/vector-icons";
 import { Colors } from "../../constants/colors";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 const OutlinedButton = ({ onPress, icon, children }) => {
   return (

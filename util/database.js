@@ -41,7 +41,7 @@ export function insertPlace(place) {
           place.location.lng,
         ],
         (_, result) => {
-          console.log(result);
+          // console.log(result);
           resolve(result);
         },
         (_, error) => {
@@ -95,6 +95,25 @@ export function fetchPlaceDetails(id) {
         (_, result) => {
           // console.log(result.rows._array[0]);
           resolve(result.rows._array[0]);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+  return promise;
+}
+
+export function deletePlaceDetails(id) {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM places WHERE id = ?",
+        [id],
+        (_, result) => {
+          // console.log(result);
+          resolve();
         },
         (_, error) => {
           reject(error);
